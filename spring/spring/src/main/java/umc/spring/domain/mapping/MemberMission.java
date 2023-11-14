@@ -1,6 +1,11 @@
 package umc.spring.domain.mapping;
 
 
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import umc.spring.domain.Member;
+import umc.spring.domain.Mission;
 import umc.spring.domain.common.BaseEntity;
 import umc.spring.domain.enums.MissionStatus;
 import javax.persistence.Entity;
@@ -29,7 +34,11 @@ public class MemberMission extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private MissionStatus status;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
-
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mission_id")
+    private Mission mission;
 }
