@@ -36,13 +36,13 @@ public class Store extends BaseEntity {
     @Column(nullable = false, length = 50)
     private String address;
 
-    @Column(nullable = false, columnDefinition = "DEFAULT 0.0")
+    @Column(nullable = false, columnDefinition = "FLOAT DEFAULT 0.0")
     private Float score;
 
     @OneToMany(mappedBy = "mission", cascade = CascadeType.ALL)
     private List<MemberMission> memberMissionList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "reviews", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private List<Review> reviews = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
