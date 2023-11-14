@@ -2,6 +2,7 @@ package umc.spring.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.OneToMany;
 import umc.spring.domain.common.BaseEntity;
 import java.time.LocalDate;
@@ -30,10 +31,13 @@ public class Mission extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, columnDefinition = "INTEGER DEFAULT 0")
     private Integer reward;
 
+    @Column(nullable = false)
     private LocalDate deadline;
 
+    @Column(nullable = false, length = 100)
     private String missionSpec;
 
     @ManyToOne(fetch = FetchType.LAZY)
