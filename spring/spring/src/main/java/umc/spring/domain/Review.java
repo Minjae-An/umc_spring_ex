@@ -36,7 +36,7 @@ public class Review extends BaseEntity {
     @Column(nullable = false, length = 200)
     private String body;
 
-    @Column(nullable = false, columnDefinition = "DEFAULT 0.0")
+    @Column(nullable = false, columnDefinition = "FLOAT DEFAULT 0.0")
     private Float score;
 
     @ManyToOne(fetch = FetchType.LAZY)
