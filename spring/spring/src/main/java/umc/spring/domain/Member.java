@@ -61,7 +61,7 @@ public class Member extends BaseEntity {
     @Column(nullable = false, length = 50)
     private String email;
 
-    @Column(nullable = false, columnDefinition = "DEFAULT 0")
+    @Column(nullable = false, columnDefinition = "INTEGER DEFAULT 0")
     private Integer point;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
