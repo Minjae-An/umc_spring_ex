@@ -24,6 +24,8 @@ bin/
 *.ipr
 out/
 !**/src/main/**/out/
+                                # to enable a separate blog link.
+                                # to enable a separate blog link.
 !**/src/test/**/out/
 
 ### NetBeans ###
