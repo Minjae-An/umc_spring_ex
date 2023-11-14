@@ -1,15 +1,19 @@
 package umc.spring.domain;
 
-import umc.spring.domain.common.BaseEntity;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import umc.spring.domain.common.BaseEntity;
 
 @Entity
 @Getter
@@ -22,5 +26,9 @@ public class Region extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, length = 20)
     private String name;
+
+    @OneToMany(mappedBy = "region")
+    private List<Store> storeList = new ArrayList<>();
 }
