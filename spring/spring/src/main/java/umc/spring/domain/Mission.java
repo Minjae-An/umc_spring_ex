@@ -1,5 +1,8 @@
 package umc.spring.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.OneToMany;
 import umc.spring.domain.common.BaseEntity;
 import java.time.LocalDate;
 import javax.persistence.Entity;
@@ -14,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import umc.spring.domain.mapping.MemberMission;
 
 @Entity
 @Getter
@@ -35,4 +39,7 @@ public class Mission extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id")
     private Store store;
+
+    @OneToMany(mappedBy = "mission")
+    List<MemberMission> memberMissionList = new ArrayList<>();
 }
