@@ -21,7 +21,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import umc.spring.domain.common.BaseEntity;
-import umc.spring.domain.mapping.MemberMission;
 
 @Entity
 @Getter
@@ -41,8 +40,8 @@ public class Store extends BaseEntity {
     @ColumnDefault("0.0")
     private Float score;
 
-    @OneToMany(mappedBy = "mission", cascade = CascadeType.ALL)
-    private List<MemberMission> memberMissionList = new ArrayList<>();
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
+    private List<Mission> missions = new ArrayList<>();
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private List<Review> reviews = new ArrayList<>();
@@ -58,5 +57,13 @@ public class Store extends BaseEntity {
 
         this.region = region;
         region.addStore(this);
+    }
+
+    public void addMission(Mission mission) {
+        missions.add(mission);
+    }
+
+    public void removeMission(Mission mission) {
+        missions.remove(mission);
     }
 }
