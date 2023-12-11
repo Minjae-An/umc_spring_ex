@@ -31,4 +31,12 @@ public class Region extends BaseEntity {
 
     @OneToMany(mappedBy = "region")
     private List<Store> storeList = new ArrayList<>();
+
+    public void addStore(Store store) {
+        storeList.add(store);
+    }
+
+    public void removeStore(Store store) {
+        storeList.remove(store);
+    }
 }
