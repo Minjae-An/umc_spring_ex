@@ -71,7 +71,7 @@ public class Member extends BaseEntity {
 //    @Column(nullable = false, length = 50)
     private String email;
 
-//    @Column(nullable = false, columnDefinition = "INTEGER DEFAULT 0")
+    //    @Column(nullable = false, columnDefinition = "INTEGER DEFAULT 0")
     @ColumnDefault("0")
     private Integer point;
 
@@ -91,11 +91,19 @@ public class Member extends BaseEntity {
         Law of Demeter 와 Tell, Don't Ask를 준수하기 위한
         memberPreferList 관련 메서드들
      */
-    public void addMemberPrefer(MemberPrefer memberPrefer){
+    public void addMemberPrefer(MemberPrefer memberPrefer) {
         memberPreferList.add(memberPrefer);
     }
 
-    public void removeMemberPrefer(MemberPrefer memberPrefer){
+    public void removeMemberPrefer(MemberPrefer memberPrefer) {
         memberPreferList.remove(memberPrefer);
+    }
+
+    public void writeReview(Review review) {
+        reviewList.add(review);
+    }
+
+    public void deleteReview(Review review) {
+        reviewList.remove(review);
     }
 }
