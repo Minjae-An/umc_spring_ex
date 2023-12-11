@@ -1,6 +1,5 @@
 package umc.spring.domain;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -65,5 +64,13 @@ public class Store extends BaseEntity {
 
     public void removeMission(Mission mission) {
         missions.remove(mission);
+    }
+
+    public void addReview(Review review) {
+        reviews.add(review);
+    }
+
+    public void removeReview(Review review) {
+        reviews.remove(review);
     }
 }
