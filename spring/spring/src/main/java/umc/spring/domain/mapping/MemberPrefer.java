@@ -1,5 +1,6 @@
 package umc.spring.domain.mapping;
 
+import java.util.Optional;
 import umc.spring.domain.FoodCategory;
 import umc.spring.domain.Member;
 import umc.spring.domain.common.BaseEntity;
@@ -35,7 +36,15 @@ public class MemberPrefer extends BaseEntity {
     private FoodCategory foodCategory;
 
     public void setMember(Member member) {
+        Optional.ofNullable(this.member)
+                .ifPresent(oldMember ->
+                        oldMember.removeMemberPrefer(this));
+
+//        if(this.member != null){
+//            member.getMemberPreferList().remove(this);
+//        }
         this.member = member;
+        member.addMemberPrefer(this);
     }
 
     public void setFoodCategory(FoodCategory foodCategory) {
