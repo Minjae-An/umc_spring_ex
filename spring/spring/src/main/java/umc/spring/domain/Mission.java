@@ -2,6 +2,7 @@ package umc.spring.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javax.persistence.Column;
 import javax.persistence.OneToMany;
 import umc.spring.domain.common.BaseEntity;
@@ -46,4 +47,12 @@ public class Mission extends BaseEntity {
 
     @OneToMany(mappedBy = "mission")
     List<MemberMission> memberMissionList = new ArrayList<>();
+
+    public void store(Store store){
+        Optional.ofNullable(this.store)
+                .ifPresent(oldStore -> oldStore.removeMission(this));
+
+        this.store = store;
+        store.addMission(this);
+    }
 }
