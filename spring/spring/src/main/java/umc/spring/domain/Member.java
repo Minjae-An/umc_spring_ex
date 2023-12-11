@@ -1,12 +1,5 @@
 package umc.spring.domain;
 
-import umc.spring.domain.common.BaseEntity;
-import umc.spring.domain.enums.Gender;
-import umc.spring.domain.enums.MemberStatus;
-import umc.spring.domain.enums.SocialType;
-import umc.spring.domain.mapping.MemberAgree;
-import umc.spring.domain.mapping.MemberMission;
-import umc.spring.domain.mapping.MemberPrefer;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +17,21 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import umc.spring.domain.common.BaseEntity;
+import umc.spring.domain.enums.Gender;
+import umc.spring.domain.enums.MemberStatus;
+import umc.spring.domain.enums.SocialType;
+import umc.spring.domain.mapping.MemberAgree;
+import umc.spring.domain.mapping.MemberMission;
+import umc.spring.domain.mapping.MemberPrefer;
 
 @Entity
 @Getter
+@DynamicInsert
+@DynamicUpdate
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -58,10 +63,16 @@ public class Member extends BaseEntity {
 
     private LocalDate inactiveDate;
 
-    @Column(nullable = false, length = 50)
+    /*
+        week 9.
+        이메일을 소셜 로그인에서 처리한 후, 나머지 정보를 기입 받는 것이 맞는 순서이나
+        소셜 로그인 없이 구현 중이라 이메일을 nullable로 바꾸고 진행
+     */
+//    @Column(nullable = false, length = 50)
     private String email;
 
-    @Column(nullable = false, columnDefinition = "INTEGER DEFAULT 0")
+//    @Column(nullable = false, columnDefinition = "INTEGER DEFAULT 0")
+    @ColumnDefault("0")
     private Integer point;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
@@ -75,4 +86,16 @@ public class Member extends BaseEntity {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<MemberMission> memberMissionList = new ArrayList<>();
+
+    /*
+        Law of Demeter 와 Tell, Don't Ask를 준수하기 위한
+        memberPreferList 관련 메서드들
+     */
+    public void addMemberPrefer(MemberPrefer memberPrefer){
+        memberPreferList.add(memberPrefer);
+    }
+
+    public void removeMemberPrefer(MemberPrefer memberPrefer){
+        memberPreferList.remove(memberPrefer);
+    }
 }
