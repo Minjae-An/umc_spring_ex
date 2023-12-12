@@ -17,8 +17,12 @@ public enum ErrorStatus implements BaseErrorCode {
     _FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON403", "금지된 요청입니다."),
 
     // Member relative exception
-    MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "MEMBER4001", "사용자가 없습니다."),
+    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER4001", "사용자가 없습니다."),
     NICKNAME_NOT_EXIST(HttpStatus.BAD_REQUEST, "MEMBER4002", "닉네임은 필수입니다."),
+
+    // MemberMission relative exception
+    ONGOING_MISSION(HttpStatus.BAD_REQUEST, "MEMBER_MISSION4001", "이미 진행 중인 미션입니다."),
+    NOT_ONGOING_MISSION(HttpStatus.BAD_REQUEST, "MEMBER_MISSION4002", "진행 중인 미션이 아닙니다."),
 
     // ex
     ARTICLE_NOT_FOUND(HttpStatus.NOT_FOUND, "ARTICLE4001", "게시글이 없습니다."),
@@ -33,7 +37,10 @@ public enum ErrorStatus implements BaseErrorCode {
     REGION_NOT_FOUND(HttpStatus.NOT_FOUND, "REGION4001", "지역이 존재하지 않습니다."),
 
     // Store relative exception
-    STORE_NOT_FOUND(HttpStatus.NOT_FOUND, "STORE4001", "가게가 존재하지 않습니다.");
+    STORE_NOT_FOUND(HttpStatus.NOT_FOUND, "STORE4001", "가게가 존재하지 않습니다."),
+
+    // Mission relative exception
+    MISSION_NOT_FOUND(HttpStatus.NOT_FOUND, "MISSION4001", "미션이 존재하지 않습니다.");
 
     private final HttpStatus httpStatus;
     private String code;
