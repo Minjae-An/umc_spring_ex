@@ -20,6 +20,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import umc.spring.apiPayload.code.status.ErrorStatus;
+import umc.spring.apiPayload.exception.handler.MemberHandler;
 import umc.spring.domain.common.BaseEntity;
 import umc.spring.domain.enums.Gender;
 import umc.spring.domain.enums.MemberStatus;
@@ -105,5 +107,18 @@ public class Member extends BaseEntity {
 
     public void deleteReview(Review review) {
         reviewList.remove(review);
+    }
+
+    public void challengeMission(MemberMission memberMission) {
+        memberMissionList.add(memberMission);
+    }
+
+    public void completeMission(MemberMission mission) {
+        MemberMission ongoingMission = memberMissionList.stream()
+                .filter(memberMission -> memberMission.equals(mission))
+                .findFirst()
+                .orElseThrow(() -> new MemberHandler(ErrorStatus.NOT_ONGOING_MISSION));
+
+        ongoingMission.complete();
     }
 }
