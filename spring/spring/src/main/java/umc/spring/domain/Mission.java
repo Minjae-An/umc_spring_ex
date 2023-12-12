@@ -48,11 +48,15 @@ public class Mission extends BaseEntity {
     @OneToMany(mappedBy = "mission")
     List<MemberMission> memberMissionList = new ArrayList<>();
 
-    public void store(Store store){
+    public void store(Store store) {
         Optional.ofNullable(this.store)
                 .ifPresent(oldStore -> oldStore.removeMission(this));
 
         this.store = store;
         store.addMission(this);
+    }
+
+    public void challenge(MemberMission memberMission) {
+        memberMissionList.add(memberMission);
     }
 }
