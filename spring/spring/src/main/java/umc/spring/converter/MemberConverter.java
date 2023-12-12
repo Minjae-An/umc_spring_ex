@@ -1,14 +1,19 @@
 package umc.spring.converter;
 
+import static umc.spring.web.dto.MemberResponseDTO.ChallengeMissionResponseDto;
+import static umc.spring.web.dto.MemberResponseDTO.JoinResultDTO;
+
 import java.util.ArrayList;
 import umc.spring.domain.Member;
+import umc.spring.domain.Mission;
 import umc.spring.domain.enums.Gender;
+import umc.spring.domain.enums.MissionStatus;
+import umc.spring.domain.mapping.MemberMission;
 import umc.spring.web.dto.MemberRequestDTO;
-import umc.spring.web.dto.MemberResponseDTO;
 
 public class MemberConverter {
-    public static MemberResponseDTO.JoinResultDTO toJoinResultDTO(Member member) {
-        return MemberResponseDTO.JoinResultDTO.builder()
+    public static JoinResultDTO toJoinResultDTO(Member member) {
+        return JoinResultDTO.builder()
                 .memberId(member.getId())
                 .createdAt(member.getCreatedAt())
                 .build();
@@ -35,6 +40,22 @@ public class MemberConverter {
                 .gender(gender)
                 .name(request.getName())
                 .memberPreferList(new ArrayList<>())
+                .build();
+    }
+
+    public static ChallengeMissionResponseDto
+    toChallengeMissionResponseDto(MemberMission memberMission) {
+        return ChallengeMissionResponseDto.builder()
+                .memberId(memberMission.getMember().getId())
+                .memberMissionId(memberMission.getId())
+                .build();
+    }
+
+    public static MemberMission toMemberMission(Member member, Mission mission) {
+        return MemberMission.builder()
+                .status(MissionStatus.CHALLENGING)
+                .member(member)
+                .mission(mission)
                 .build();
     }
 }
