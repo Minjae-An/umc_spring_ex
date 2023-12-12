@@ -27,4 +27,13 @@ public class MemberRequestDTO {
         @ExistCategories
         List<Long> preferCategory;
     }
+
+    @Getter
+    public static class ChallengeMissionRequestDto {
+        @NotNull
+        private Long memberId;
+
+        @NotNull
+        private Long missionId;
+    }
 }
