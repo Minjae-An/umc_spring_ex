@@ -34,6 +34,11 @@ public class StoreCommandServiceImpl implements StoreCommandService {
 
 
     @Override
+    public Store save(Store store) {
+        return storeRepository.save(store);
+    }
+
+    @Override
     public Mission addMission(AddMissionRequestDTO request, Long storeId) {
         Mission mission = MissionConverter.toMission(request);
         Store store = findById(storeId);
