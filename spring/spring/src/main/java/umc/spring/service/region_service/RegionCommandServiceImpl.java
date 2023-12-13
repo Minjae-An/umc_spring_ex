@@ -9,7 +9,7 @@ import umc.spring.converter.StoreConverter;
 import umc.spring.domain.Region;
 import umc.spring.domain.Store;
 import umc.spring.repository.RegionRepository;
-import umc.spring.repository.StoreRepository;
+import umc.spring.service.store_service.StoreCommandService;
 import umc.spring.web.dto.region.RegionRequestDTO.AddStoreToRegionRequestDTO;
 
 @Service
@@ -17,7 +17,7 @@ import umc.spring.web.dto.region.RegionRequestDTO.AddStoreToRegionRequestDTO;
 @Transactional
 public class RegionCommandServiceImpl implements RegionCommandService {
     private final RegionRepository regionRepository;
-    private final StoreRepository storeRepository;
+    private final StoreCommandService storeCommandService;
 
     @Override
     public Store addStoreToRegion(AddStoreToRegionRequestDTO request, Long regionId) {
@@ -25,7 +25,7 @@ public class RegionCommandServiceImpl implements RegionCommandService {
         Store store = StoreConverter.toStore(request);
         store.region(region);
 
-        return storeRepository.save(store);
+        return storeCommandService.save(store);
     }
 
     private Region findById(Long regionId) {
