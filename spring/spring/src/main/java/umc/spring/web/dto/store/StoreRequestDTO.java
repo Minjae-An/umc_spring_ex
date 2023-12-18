@@ -42,4 +42,14 @@ public class StoreRequestDTO {
 //        @Size(max = 3)
 //        List<MultipartFile> reviewImages;
     }
+
+    @Getter
+    public static class ReviewDTO{
+        @NotBlank
+        private String title;
+        @NotNull
+        private Float score;
+        @NotBlank
+        private String body;
+    }
 }
