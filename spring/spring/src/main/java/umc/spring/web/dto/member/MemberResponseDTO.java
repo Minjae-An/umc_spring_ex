@@ -1,5 +1,6 @@
 package umc.spring.web.dto.member;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,5 +24,17 @@ public class MemberResponseDTO {
     public static class ChallengeMissionResponseDto{
         Long memberId;
         Long memberMissionId;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class WrittenReviewResponseDto{
+        private String storeName;
+        private String memberName;
+        private Float score;
+        private String body;
+        private LocalDate createdAt;
     }
 }
