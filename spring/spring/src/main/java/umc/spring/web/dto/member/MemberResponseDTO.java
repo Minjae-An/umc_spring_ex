@@ -1,4 +1,4 @@
-package umc.spring.web.dto;
+package umc.spring.web.dto.member;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;

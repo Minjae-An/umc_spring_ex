@@ -1,7 +1,7 @@
 package umc.spring.converter;
 
-import static umc.spring.web.dto.MemberResponseDTO.ChallengeMissionResponseDto;
-import static umc.spring.web.dto.MemberResponseDTO.JoinResultDTO;
+import static umc.spring.web.dto.member.MemberResponseDTO.ChallengeMissionResponseDto;
+import static umc.spring.web.dto.member.MemberResponseDTO.JoinResultDTO;
 
 import java.util.ArrayList;
 import umc.spring.domain.Member;
@@ -9,7 +9,7 @@ import umc.spring.domain.Mission;
 import umc.spring.domain.enums.Gender;
 import umc.spring.domain.enums.MissionStatus;
 import umc.spring.domain.mapping.MemberMission;
-import umc.spring.web.dto.MemberRequestDTO;
+import umc.spring.web.dto.member.MemberRequestDTO;
 
 public class MemberConverter {
     public static JoinResultDTO toJoinResultDTO(Member member) {

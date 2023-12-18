@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import umc.spring.apiPayload.code.status.ErrorStatus;
 import umc.spring.service.member_service.MemberQueryService;
 import umc.spring.validation.annotation.OngoingMission;
-import umc.spring.web.dto.MemberRequestDTO.ChallengeMissionRequestDto;
+import umc.spring.web.dto.member.MemberRequestDTO.ChallengeMissionRequestDto;
 
 @Component
 @RequiredArgsConstructor

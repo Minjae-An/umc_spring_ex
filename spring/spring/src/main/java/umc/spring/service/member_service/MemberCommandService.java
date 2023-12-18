@@ -1,7 +1,7 @@
 package umc.spring.service.member_service;
 
-import static umc.spring.web.dto.MemberRequestDTO.ChallengeMissionRequestDto;
-import static umc.spring.web.dto.MemberRequestDTO.JoinDto;
+import static umc.spring.web.dto.member.MemberRequestDTO.ChallengeMissionRequestDto;
+import static umc.spring.web.dto.member.MemberRequestDTO.JoinDto;
 
 import umc.spring.domain.Member;
 import umc.spring.domain.mapping.MemberMission;

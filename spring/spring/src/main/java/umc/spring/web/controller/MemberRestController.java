@@ -1,9 +1,9 @@
 package umc.spring.web.controller;
 
-import static umc.spring.web.dto.MemberRequestDTO.ChallengeMissionRequestDto;
-import static umc.spring.web.dto.MemberRequestDTO.JoinDto;
-import static umc.spring.web.dto.MemberResponseDTO.ChallengeMissionResponseDto;
-import static umc.spring.web.dto.MemberResponseDTO.JoinResultDTO;
+import static umc.spring.web.dto.member.MemberRequestDTO.ChallengeMissionRequestDto;
+import static umc.spring.web.dto.member.MemberRequestDTO.JoinDto;
+import static umc.spring.web.dto.member.MemberResponseDTO.ChallengeMissionResponseDto;
+import static umc.spring.web.dto.member.MemberResponseDTO.JoinResultDTO;
 
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;

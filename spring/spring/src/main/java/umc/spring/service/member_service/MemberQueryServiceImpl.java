@@ -9,7 +9,7 @@ import umc.spring.domain.Member;
 import umc.spring.domain.Mission;
 import umc.spring.repository.MemberRepository;
 import umc.spring.service.mission_service.MissionQueryService;
-import umc.spring.web.dto.MemberRequestDTO.ChallengeMissionRequestDto;
+import umc.spring.web.dto.member.MemberRequestDTO.ChallengeMissionRequestDto;
 
 @Service
 @RequiredArgsConstructor

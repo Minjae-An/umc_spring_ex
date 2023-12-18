@@ -17,8 +17,8 @@ import umc.spring.domain.mapping.MemberPrefer;
 import umc.spring.repository.MemberRepository;
 import umc.spring.service.food_category_service.FoodCategoryQueryService;
 import umc.spring.service.mission_service.MissionQueryService;
-import umc.spring.web.dto.MemberRequestDTO.ChallengeMissionRequestDto;
-import umc.spring.web.dto.MemberRequestDTO.JoinDto;
+import umc.spring.web.dto.member.MemberRequestDTO.ChallengeMissionRequestDto;
+import umc.spring.web.dto.member.MemberRequestDTO.JoinDto;
 
 @Service
 @RequiredArgsConstructor
