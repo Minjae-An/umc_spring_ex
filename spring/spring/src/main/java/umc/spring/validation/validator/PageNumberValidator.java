@@ -1,4 +1,4 @@
-package umc.spring.web.controller;
+package umc.spring.validation.validator;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -15,7 +15,7 @@ public class PageNumberValidator implements ConstraintValidator<CheckPage, Integ
 
     @Override
     public boolean isValid(Integer value, ConstraintValidatorContext context) {
-        boolean isValid = value < 0;
+        boolean isValid = value > 0;
 
         if (!isValid) {
             context.disableDefaultConstraintViolation();
