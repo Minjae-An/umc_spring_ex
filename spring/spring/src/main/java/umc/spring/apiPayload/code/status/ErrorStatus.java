@@ -42,6 +42,9 @@ public enum ErrorStatus implements BaseErrorCode {
     // Mission relative exception
     MISSION_NOT_FOUND(HttpStatus.NOT_FOUND, "MISSION4001", "미션이 존재하지 않습니다."),
 
+    // Review relative exception
+    REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "REVIEW4001", "리뷰가 존재하지 않습니다."),
+
     // Page relative exception
     PAGE_NUMBER_OUT_OF_RANGE(HttpStatus.BAD_REQUEST, "PAGE4001", "페이지 번호는 1이상이어야 합니다.");
 
