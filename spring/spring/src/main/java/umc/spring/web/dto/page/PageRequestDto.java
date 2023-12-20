@@ -1,16 +1,16 @@
 package umc.spring.web.dto.page;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import umc.spring.validation.annotation.CheckPage;
 
 @Getter
+@AllArgsConstructor
 public class PageRequestDto {
     @NotNull
     @CheckPage
     private Integer page;
 
-    @Positive
-    private Integer size = 10;
+    private Integer size;
 }
