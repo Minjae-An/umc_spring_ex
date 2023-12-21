@@ -39,7 +39,6 @@ import umc.spring.validation.annotation.CheckPage;
 import umc.spring.validation.annotation.OngoingMission;
 import umc.spring.web.dto.member.MemberResponseDTO.OngoingMissionResponseDto;
 import umc.spring.web.dto.member.MemberResponseDTO.WrittenReviewResponseDto;
-import umc.spring.web.dto.page.PageRequestDto;
 import umc.spring.web.dto.page.PageResponseDto;
 
 @RestController
@@ -64,6 +63,7 @@ public class MemberRestController {
         return ApiResponse.onSuccess(MemberConverter.toChallengeMissionResponseDto(memberMission));
     }
 
+    // TODO : 쿼리스트링을 요청 DTO의 필드로 매핑하고, 필드에 @Constraint 활용 커스텀 어노테이션 사용시 발생하는 빈 예외 응답 상황 해결
     @GetMapping("/{memberId}/written-reviews")
     @Operation(
             summary = "해당 멤버가 작성한 리뷰 목록 조회 API",
@@ -85,11 +85,12 @@ public class MemberRestController {
     })
     public ApiResponse<PageResponseDto<WrittenReviewResponseDto>>
     getWrittenReviews(@PathVariable @Positive Long memberId,
-                      @Valid PageRequestDto request) {
-        PageRequest pageRequest = PageDtoConverter.toPageRequest(request);
-        Page<Review> page = memberQueryService.getWrittenReviews(memberId, pageRequest);
+                      @RequestParam(name = "page") @Positive Integer page,
+                      @RequestParam(name = "size", required = false) Integer size) {
+        PageRequest pageRequest = PageDtoConverter.toPageRequest(page, size);
+        Page<Review> writtenReviews = memberQueryService.getWrittenReviews(memberId, pageRequest);
         PageResponseDto<WrittenReviewResponseDto> response =
-                MemberConverter.writtenReviewPageResponseDto(page);
+                MemberConverter.writtenReviewPageResponseDto(writtenReviews);
         return ApiResponse.onSuccess(response);
     }
 
