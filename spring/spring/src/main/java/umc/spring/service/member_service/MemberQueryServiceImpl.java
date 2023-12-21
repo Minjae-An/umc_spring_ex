@@ -10,6 +10,8 @@ import umc.spring.apiPayload.exception.handler.MemberHandler;
 import umc.spring.domain.Member;
 import umc.spring.domain.Mission;
 import umc.spring.domain.Review;
+import umc.spring.domain.mapping.MemberMission;
+import umc.spring.repository.MemberMissionRepository;
 import umc.spring.repository.MemberRepository;
 import umc.spring.service.mission_service.MissionQueryService;
 import umc.spring.service.review_service.ReviewQueryService;
@@ -20,6 +22,7 @@ import umc.spring.web.dto.member.MemberRequestDTO.ChallengeMissionRequestDto;
 @Transactional(readOnly = true)
 public class MemberQueryServiceImpl implements MemberQueryService {
     private final MemberRepository memberRepository;
+    private final MemberMissionRepository memberMissionRepository;
     private final MissionQueryService missionQueryService;
     private final ReviewQueryService reviewQueryService;
 
@@ -45,5 +48,11 @@ public class MemberQueryServiceImpl implements MemberQueryService {
     public Page<Review> getWrittenReviews(Long memberId, PageRequest request) {
         Member member = findById(memberId);
         return reviewQueryService.findAllByMember(member, request);
+    }
+
+    @Override
+    public Page<MemberMission> getOngoingMissions(Long memberId, PageRequest request) {
+        Member member = findById(memberId);
+        return memberMissionRepository.findAllByMember(member, request);
     }
 }
