@@ -14,6 +14,7 @@ import umc.spring.domain.enums.Gender;
 import umc.spring.domain.enums.MissionStatus;
 import umc.spring.domain.mapping.MemberMission;
 import umc.spring.web.dto.member.MemberRequestDTO;
+import umc.spring.web.dto.member.MemberResponseDTO.OngoingMissionResponseDto;
 import umc.spring.web.dto.member.MemberResponseDTO.WrittenReviewResponseDto;
 import umc.spring.web.dto.page.PageResponseDto;
 
@@ -81,6 +82,31 @@ public class MemberConverter {
                 .collect(Collectors.toList());
 
         return PageResponseDto.<WrittenReviewResponseDto>builder()
+                .contents(contents)
+                .pageSize(page.getSize())
+                .totalPage(page.getTotalPages())
+                .totalElements(page.getTotalElements())
+                .isFirst(page.isFirst())
+                .isLast(page.isLast())
+                .build();
+    }
+
+    public static OngoingMissionResponseDto ongoingMissionResponseDto(MemberMission memberMission) {
+        return OngoingMissionResponseDto.builder()
+                .missionId(memberMission.getId())
+                .storeName(memberMission.getMission().getStore().getName())
+                .reward(memberMission.getMission().getReward())
+                .deadline(memberMission.getMission().getDeadline())
+                .missionSpec(memberMission.getMission().getMissionSpec())
+                .build();
+    }
+
+    public static PageResponseDto<OngoingMissionResponseDto> ongoingMissionPageResponseDto(Page<MemberMission> page) {
+        List<OngoingMissionResponseDto> contents = page.getContent().stream()
+                .map(MemberConverter::ongoingMissionResponseDto)
+                .collect(Collectors.toList());
+
+        return PageResponseDto.<OngoingMissionResponseDto>builder()
                 .contents(contents)
                 .pageSize(page.getSize())
                 .totalPage(page.getTotalPages())
