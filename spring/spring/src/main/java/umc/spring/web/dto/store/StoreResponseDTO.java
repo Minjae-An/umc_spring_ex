@@ -53,4 +53,15 @@ public class StoreResponseDTO {
         private String body;
         private LocalDate createdAt;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MissionPreviewDTO {
+        private Long missionId;
+        private Integer reward;
+        private LocalDate deadline;
+        private String missionSpec;
+    }
 }
