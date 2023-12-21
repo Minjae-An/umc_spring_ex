@@ -14,6 +14,7 @@ import umc.spring.domain.Member;
 import umc.spring.domain.Mission;
 import umc.spring.domain.mapping.MemberMission;
 import umc.spring.domain.mapping.MemberPrefer;
+import umc.spring.repository.MemberMissionRepository;
 import umc.spring.repository.MemberRepository;
 import umc.spring.service.food_category_service.FoodCategoryQueryService;
 import umc.spring.service.mission_service.MissionQueryService;
@@ -25,6 +26,7 @@ import umc.spring.web.dto.member.MemberRequestDTO.JoinDto;
 @Transactional
 public class MemberCommandServiceImpl implements MemberCommandService {
     private final MemberRepository memberRepository;
+    private final MemberMissionRepository memberMissionRepository;
     private final FoodCategoryQueryService foodCategoryQueryService;
     private final MissionQueryService missionQueryService;
 
@@ -56,5 +58,17 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         member.challengeMission(memberMission);
         mission.challenge(memberMission);
         return memberMission;
+    }
+
+    @Override
+    public void completeMission(Long memberId, Long memberMissionId) {
+        Member member = findById(memberId);
+        MemberMission memberMission = findMemberMissionById(memberMissionId);
+        member.completeMission(memberMission);
+    }
+
+    private MemberMission findMemberMissionById(Long memberMissionId){
+        return memberMissionRepository.findById(memberMissionId)
+                .orElseThrow(()->new MemberHandler(ErrorStatus.MEMBER_MISSION_NOT_FOUND));
     }
 }
