@@ -37,4 +37,16 @@ public class MemberResponseDTO {
         private String body;
         private LocalDate createdAt;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class OngoingMissionResponseDto{
+        private Long missionId;
+        private String storeName;
+        private Integer reward;
+        private LocalDate deadline;
+        private String missionSpec;
+    }
 }
