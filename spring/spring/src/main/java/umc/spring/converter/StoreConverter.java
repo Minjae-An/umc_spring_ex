@@ -3,10 +3,13 @@ package umc.spring.converter;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
+import umc.spring.domain.Mission;
 import umc.spring.domain.Review;
 import umc.spring.domain.Store;
+import umc.spring.web.dto.page.PageResponseDto;
 import umc.spring.web.dto.region.RegionRequestDTO;
 import umc.spring.web.dto.store.StoreResponseDTO;
+import umc.spring.web.dto.store.StoreResponseDTO.MissionPreviewDTO;
 import umc.spring.web.dto.store.StoreResponseDTO.ReviewPreviewDTO;
 
 public class StoreConverter {
@@ -43,6 +46,30 @@ public class StoreConverter {
                 .totalElements(reviewPage.getTotalElements())
                 .listSize(reviewPage.getSize())
                 .reviews(reviewPreviewDTOList)
+                .build();
+    }
+
+    public static StoreResponseDTO.MissionPreviewDTO missionPreviewDTO(Mission mission) {
+        return MissionPreviewDTO.builder()
+                .missionId(mission.getId())
+                .reward(mission.getReward())
+                .deadline(mission.getDeadline())
+                .missionSpec(mission.getMissionSpec())
+                .build();
+    }
+
+    public static PageResponseDto<MissionPreviewDTO> missionPreviewDTOPageResponseDto(Page<Mission> page) {
+        List<MissionPreviewDTO> contents = page.getContent().stream()
+                .map(StoreConverter::missionPreviewDTO)
+                .collect(Collectors.toList());
+
+        return PageResponseDto.<MissionPreviewDTO>builder()
+                .contents(contents)
+                .pageSize(page.getSize())
+                .totalPage(page.getTotalPages())
+                .totalElements(page.getTotalElements())
+                .isFirst(page.isFirst())
+                .isLast(page.isLast())
                 .build();
     }
 }
