@@ -10,7 +10,8 @@ import umc.spring.apiPayload.code.ReasonDTO;
 @AllArgsConstructor
 public enum SuccessStatus implements BaseCode {
     // normal response
-    _OK(HttpStatus.OK, "COMMON200", "성공입니다.");
+    _OK(HttpStatus.OK, "COMMON200", "성공입니다."),
+    _ACCEPTED(HttpStatus.ACCEPTED, "COMMON204", "별도의 응답 데이터가 없으며, 정상 처리 되었습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
