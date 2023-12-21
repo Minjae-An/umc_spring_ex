@@ -15,6 +15,6 @@ public class PageDtoConverter {
 
     public static PageRequest toPageRequest(Integer page, Integer size){
         size = Optional.ofNullable(size).isPresent() ? size : DEFAULT_PAGE_SIZE;
-        return PageRequest.of(page, size);
+        return PageRequest.of(page-1, size);
     }
 }
