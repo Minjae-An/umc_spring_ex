@@ -12,4 +12,6 @@ public interface MemberCommandService {
     Member joinMember(JoinDto request);
 
     MemberMission challengeMission(ChallengeMissionRequestDto request);
+
+    void completeMission(Long memberId, Long memberMissionId);
 }
