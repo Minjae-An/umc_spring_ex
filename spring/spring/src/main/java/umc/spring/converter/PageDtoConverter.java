@@ -12,4 +12,9 @@ public class PageDtoConverter {
                 ? DEFAULT_PAGE_SIZE : requestDto.getSize();
         return PageRequest.of(requestDto.getPage()-1 , size);
     }
+
+    public static PageRequest toPageRequest(Integer page, Integer size){
+        size = Optional.ofNullable(size).isPresent() ? size : DEFAULT_PAGE_SIZE;
+        return PageRequest.of(page, size);
+    }
 }
