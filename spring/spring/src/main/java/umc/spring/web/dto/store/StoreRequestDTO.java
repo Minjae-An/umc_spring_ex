@@ -3,9 +3,11 @@ package umc.spring.web.dto.store;
 import java.time.LocalDate;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import lombok.Data;
 import lombok.Getter;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.web.multipart.MultipartFile;
 
 public class StoreRequestDTO {
     @Getter
@@ -36,20 +38,18 @@ public class StoreRequestDTO {
         @NotNull
         @Range(min = 0, max = 5)
         private Float score;
-
-        // reviewImage 관련 데이터는 S3가 관련되어 있어 편의상 배제하였다.
-//        @NotNull
-//        @Size(max = 3)
-//        List<MultipartFile> reviewImages;
     }
 
-    @Getter
-    public static class ReviewDTO{
+    @Data
+    public static class ReviewDTO {
+        @NotNull
+        private Long memberId;
         @NotBlank
         private String title;
         @NotNull
         private Float score;
         @NotBlank
         private String body;
+        private MultipartFile reviewPicture;
     }
 }
