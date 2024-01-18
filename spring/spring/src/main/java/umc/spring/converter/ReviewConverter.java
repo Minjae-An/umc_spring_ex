@@ -17,6 +17,13 @@ public class ReviewConverter {
                 .build();
     }
 
+    public static ReviewImage toReviewImage(Review review, String imageUrl){
+        return ReviewImage.builder()
+                .imageUrl(imageUrl)
+                .review(review)
+                .build();
+    }
+
     public static List<ReviewImage> toReviewImages(Review review, List<String> imgUrls) {
         return imgUrls.stream()
                 .map(imgUrl -> ReviewImage.builder()
