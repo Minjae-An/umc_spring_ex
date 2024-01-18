@@ -64,4 +64,14 @@ public class StoreResponseDTO {
         private LocalDate deadline;
         private String missionSpec;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CreateReviewResultDTO{
+        private Long storeId;
+        private Long reviewId;
+        private LocalDateTime createdAt;
+    }
 }
