@@ -9,10 +9,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,14 +34,17 @@ import umc.spring.validation.annotation.CheckPage;
 import umc.spring.validation.annotation.ExistStores;
 import umc.spring.web.dto.page.PageResponseDto;
 import umc.spring.web.dto.store.StoreRequestDTO;
+import umc.spring.web.dto.store.StoreRequestDTO.ReviewDTO;
 import umc.spring.web.dto.store.StoreResponseDTO;
 import umc.spring.web.dto.store.StoreResponseDTO.AddMissionResponseDTO;
+import umc.spring.web.dto.store.StoreResponseDTO.CreateReviewResultDTO;
 import umc.spring.web.dto.store.StoreResponseDTO.MissionPreviewDTO;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/store")
 @Validated
+@Slf4j
 public class StoreRestController {
     private final StoreQueryService storeQueryService;
     private final StoreCommandService storeCommandService;
@@ -117,4 +122,27 @@ public class StoreRestController {
         return ApiResponse.onSuccess(response);
     }
 
+    @PostMapping(value = "/{storeId}/review", consumes = "multipart/form-data")
+    @Operation(
+            summary = "하나의 리뷰 이미지를 가진 리뷰 추가 API",
+            description = "특정 가게에 리뷰를 추가하는 API, 하나의 리뷰 이미지를 가지는 리뷰만 추가 가능."
+                    + "query string으로 멤버의 ID(memberId)를 주세요"
+    )
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "STORE4001",
+                    description = "해당 id를 가진 Store가 존재하지 않음",
+                    content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4001",
+                    description = "해당 id를 가진 Member가 존재하지 않음",
+                    content = @Content(schema = @Schema(implementation = ApiResponse.class)))
+    })
+    @Parameters({
+            @Parameter(name = "storeId", description = "가게의 아이디, path variable")
+    })
+    public ApiResponse<CreateReviewResultDTO> createReview(@ModelAttribute @Valid ReviewDTO request,
+                                                           @ExistStores @PathVariable(name = "storeId") Long storeId) {
+        log.info("request = {}", request);
+        Review review = storeCommandService.createReview(request.getMemberId(), storeId, request);
+        return ApiResponse.onSuccess(StoreConverter.toCreateReviewResultDTO(review));
+    }
 }
