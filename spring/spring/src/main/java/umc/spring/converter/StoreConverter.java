@@ -3,12 +3,15 @@ package umc.spring.converter;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
+import umc.spring.domain.Member;
 import umc.spring.domain.Mission;
 import umc.spring.domain.Review;
 import umc.spring.domain.Store;
 import umc.spring.web.dto.page.PageResponseDto;
 import umc.spring.web.dto.region.RegionRequestDTO;
+import umc.spring.web.dto.store.StoreRequestDTO.ReviewDTO;
 import umc.spring.web.dto.store.StoreResponseDTO;
+import umc.spring.web.dto.store.StoreResponseDTO.CreateReviewResultDTO;
 import umc.spring.web.dto.store.StoreResponseDTO.MissionPreviewDTO;
 import umc.spring.web.dto.store.StoreResponseDTO.ReviewPreviewDTO;
 
@@ -22,6 +25,16 @@ public class StoreConverter {
         return Store.builder()
                 .name(request.getName())
                 .address(request.getAddress())
+                .build();
+    }
+
+    public static Review toReview(ReviewDTO request, Member member, Store store) {
+        return Review.builder()
+                .title(request.getTitle())
+                .body(request.getBody())
+                .score(request.getScore())
+                .store(store)
+                .member(member)
                 .build();
     }
 
@@ -70,6 +83,14 @@ public class StoreConverter {
                 .totalElements(page.getTotalElements())
                 .isFirst(page.isFirst())
                 .isLast(page.isLast())
+                .build();
+    }
+
+    public static CreateReviewResultDTO toCreateReviewResultDTO(Review review) {
+        return CreateReviewResultDTO.builder()
+                .storeId(review.getStore().getId())
+                .reviewId(review.getId())
+                .createdAt(review.getCreatedAt())
                 .build();
     }
 }
