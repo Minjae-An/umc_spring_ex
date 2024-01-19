@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3390/umc_spring
-    username: umc_jack
-    password: 1234
+    url: ${UMC_DB_URL}
+    username: ${UMC_DB_USERNAME}
+    password: ${UMC_DB_PW}
     driver-class-name: com.mysql.cj.jdbc.Driver
   sql:
     init:
@@ -17,3 +17,17 @@ spring:
         hbm2ddl:
           auto: update
         default_batch_fetch_size: 1000
+
+cloud:
+  aws:
+    s3:
+      bucket: umc-5th-jack
+      path:
+        review: review
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+    credentials:
+      access-key: ${AWS_ACCESS_KEY_ID}
+      secret-key: ${AWS_SECRET_ACCESS_KEY}

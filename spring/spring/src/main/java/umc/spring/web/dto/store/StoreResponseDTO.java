@@ -47,6 +47,7 @@ public class StoreResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ReviewPreviewDTO {
+        private Long reviewId;
         // Member에 대한 정보가 고도화되어 필요한 경우 별도의 DTO로 표현 권장
         private String ownerNickname;
         private Float score;
@@ -63,5 +64,37 @@ public class StoreResponseDTO {
         private Integer reward;
         private LocalDate deadline;
         private String missionSpec;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CreateReviewResultDTO{
+        private Long storeId;
+        private Long reviewId;
+        private LocalDateTime createdAt;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ReviewDetailDTO{
+        private Long reviewId;
+        private Long wroteMemberId;
+        private String title;
+        private List<String> reviewImageUrls;
+        private String body;
+        private Float score;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class DeleteReviewDTO{
+        private Long storeId;
+        private LocalDateTime deletedAt;
     }
 }
