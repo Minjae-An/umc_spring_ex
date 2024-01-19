@@ -22,9 +22,11 @@ import umc.spring.repository.UuidRepository;
 import umc.spring.service.member_service.MemberQueryService;
 import umc.spring.service.mission_service.MissionCommandService;
 import umc.spring.service.review_service.ReviewCommandService;
+import umc.spring.service.review_service.ReviewQueryService;
 import umc.spring.web.dto.store.StoreRequestDTO.AddMissionRequestDTO;
 import umc.spring.web.dto.store.StoreRequestDTO.AddReviewRequestDTO;
 import umc.spring.web.dto.store.StoreRequestDTO.ReviewDTO;
+import umc.spring.web.dto.store.StoreResponseDTO.DeleteReviewDTO;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +36,7 @@ public class StoreCommandServiceImpl implements StoreCommandService {
     private final UuidRepository uuidRepository;
     private final MissionCommandService missionCommandService;
     private final MemberQueryService memberQueryService;
+    private final ReviewQueryService reviewQueryService;
     private final ReviewCommandService reviewCommandService;
     private final AmazonS3Manager s3Manager;
 
@@ -87,5 +90,15 @@ public class StoreCommandServiceImpl implements StoreCommandService {
                 request.getReviewPicture());
         List<ReviewImage> reviewImages = List.of(ReviewConverter.toReviewImage(review, pictureUrl));
         return reviewCommandService.save(review, reviewImages);
+    }
+
+    @Override
+    public DeleteReviewDTO deleteReview(Long reviewId) {
+        Review review = reviewQueryService.findById(reviewId);
+        review.getReviewImages().stream()
+                .map(ReviewImage::getImageUrl)
+                .forEach(s3Manager::deleteFile);
+        reviewCommandService.deleteReview(reviewId);
+        return ReviewConverter.toDeleteReviewDTO(review);
     }
 }
