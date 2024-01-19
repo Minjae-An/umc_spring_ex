@@ -1,6 +1,7 @@
 package umc.spring.aws;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import java.io.IOException;
@@ -38,7 +39,18 @@ public class AmazonS3Manager {
         return String.join("/", amazonConfig.getReviewPath(), uuid.getUuid());
     }
 
+    public void deleteFile(String imageUrl) {
+        String keyName = amazonConfig.getReviewPath()
+                .concat("/")
+                .concat(extractKeyName(imageUrl));
+        amazonS3.deleteObject(new DeleteObjectRequest(amazonConfig.getBucket(), keyName));
+    }
+
     private String extractExtension(String filename) {
         return filename.substring(filename.lastIndexOf('.'));
+    }
+
+    private String extractKeyName(String imageUrl) {
+        return imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
     }
 }
