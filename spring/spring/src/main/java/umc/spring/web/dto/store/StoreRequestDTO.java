@@ -3,8 +3,10 @@ package umc.spring.web.dto.store;
 import java.time.LocalDate;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,7 +42,8 @@ public class StoreRequestDTO {
         private Float score;
     }
 
-    @Data
+    @Getter
+    @AllArgsConstructor
     public static class ReviewDTO {
         @NotNull
         private Long memberId;
