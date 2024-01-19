@@ -9,10 +9,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,13 +38,23 @@ import umc.spring.web.dto.store.StoreRequestDTO.ReviewDTO;
 import umc.spring.web.dto.store.StoreResponseDTO;
 import umc.spring.web.dto.store.StoreResponseDTO.AddMissionResponseDTO;
 import umc.spring.web.dto.store.StoreResponseDTO.CreateReviewResultDTO;
+import umc.spring.web.dto.store.StoreResponseDTO.DeleteReviewDTO;
 import umc.spring.web.dto.store.StoreResponseDTO.MissionPreviewDTO;
+import umc.spring.web.dto.store.StoreResponseDTO.ReviewDetailDTO;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/store")
 @Validated
-@Slf4j
+@ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "access 토큰을 주세요!",
+                content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "acess 토큰 만료",
+                content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "acess 토큰 모양이 이상함",
+                content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+})
 public class StoreRestController {
     private final StoreQueryService storeQueryService;
     private final StoreCommandService storeCommandService;
@@ -70,15 +80,6 @@ public class StoreRestController {
             summary = "해당 가게의 리뷰 목록 조회 API",
             description = "특정 가게의 리뷰들의 목록을 조회하는 API이며, 페이징을 포함합니다."
                     + "query String으로 page 번호를 주세요")
-    @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "access 토큰을 주세요!",
-                    content = @Content(schema = @Schema(implementation = ApiResponse.class))),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "acess 토큰 만료",
-                    content = @Content(schema = @Schema(implementation = ApiResponse.class))),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "acess 토큰 모양이 이상함",
-                    content = @Content(schema = @Schema(implementation = ApiResponse.class))),
-    })
     @Parameters({
             @Parameter(name = "storeId", description = "가게의 아이디, path variable 입니다!")
     })
@@ -96,13 +97,6 @@ public class StoreRestController {
             description = "특정 가게의 미션 목록을 조회하는 API, 페이징을 포함한다."
                     + "query String으로 page 번호, 페이지 사이즈(size, 선택적 기본 10) 필요")
     @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "access 토큰을 주세요!",
-                    content = @Content(schema = @Schema(implementation = ApiResponse.class))),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "acess 토큰 만료",
-                    content = @Content(schema = @Schema(implementation = ApiResponse.class))),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "acess 토큰 모양이 이상함",
-                    content = @Content(schema = @Schema(implementation = ApiResponse.class))),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "STORE4001", description = "해당 id를 가진 Store가 존재하지 않음",
                     content = @Content(schema = @Schema(implementation = ApiResponse.class)))
     })
@@ -141,8 +135,54 @@ public class StoreRestController {
     })
     public ApiResponse<CreateReviewResultDTO> createReview(@ModelAttribute @Valid ReviewDTO request,
                                                            @ExistStores @PathVariable(name = "storeId") Long storeId) {
-        log.info("request = {}", request);
         Review review = storeCommandService.createReview(request.getMemberId(), storeId, request);
         return ApiResponse.onSuccess(StoreConverter.toCreateReviewResultDTO(review));
+    }
+
+    @GetMapping("{storeId}/reviews/{reviewId}")
+    @Operation(
+            summary = "리뷰 상세 내용 조회 API",
+            description = "특정 리뷰의 상세 내용을 조회하는 API"
+    )
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "STORE4001",
+                    description = "해당 id를 가진 Store가 존재하지 않음",
+                    content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "REVIEW4001",
+                    description = "해당 id를 가진 Review가 존재하지 않음",
+                    content = @Content(schema = @Schema(implementation = ApiResponse.class)))
+    })
+
+    @Parameters({
+            @Parameter(name = "storeId", description = "가게의 아이디, path variable. 가게 존재 여부 검증에 사용"),
+            @Parameter(name = "reviewId", description = "리뷰 아이디, path variable. 리뷰 조회에 사용")
+    })
+    public ApiResponse<ReviewDetailDTO> getReviewDetail(@PathVariable("storeId") @ExistStores Long storeId,
+                                                        @PathVariable("reviewId") Long reviewId) {
+        ReviewDetailDTO response = storeQueryService.getReviewDetail(reviewId);
+        return ApiResponse.onSuccess(response);
+    }
+
+    @DeleteMapping("{storeId}/reviews/{reviewId}")
+    @Operation(
+            summary = "리뷰 삭제 API",
+            description = "특정 리뷰 삭제 API, 리뷰 이미지도 함께 삭제"
+    )
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "STORE4001",
+                    description = "해당 id를 가진 Store가 존재하지 않음",
+                    content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "REVIEW4001",
+                    description = "해당 id를 가진 Review가 존재하지 않음",
+                    content = @Content(schema = @Schema(implementation = ApiResponse.class)))
+    })
+    @Parameters({
+            @Parameter(name = "storeId", description = "가게의 아이디, path variable. 가게 존재 여부 검증에 사용"),
+            @Parameter(name = "reviewId", description = "리뷰 아이디, path variable. 리뷰 조회에 사용")
+    })
+    public ApiResponse<DeleteReviewDTO> deleteReview(@PathVariable("storeId") @ExistStores Long storeId,
+                                                     @PathVariable("reviewId") Long reviewId) {
+        DeleteReviewDTO response = storeCommandService.deleteReview(reviewId);
+        return ApiResponse.onSuccess(response);
     }
 }
